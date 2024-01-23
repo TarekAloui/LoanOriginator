@@ -3,7 +3,12 @@ from .database import (
     save_statement_analysis,
     save_training_statement_analysis,
 )
-from .models import MonthlySummary, Transaction, StatementAnalysis
+from .models import (
+    MonthlySummary,
+    Transaction,
+    StatementAnalysis,
+    LoanPredictionResponse,
+)
 from .services import (
     process_statement_pdf,
     extract_analysis_from_statement_df,
@@ -14,7 +19,9 @@ app = FastAPI()
 
 
 @app.post("/get_loan_prediction_endpoint/")
-async def get_loan_prediction_endpoint(statement_pdf_blob: str) -> StatementAnalysis:
+async def get_loan_prediction_endpoint(
+    statement_pdf_blob: str,
+) -> LoanPredictionResponse:
     try:
         statement_data = process_statement_pdf(statement_pdf_blob)
         statement_analysis = extract_analysis_from_statement_df(statement_data)

@@ -98,3 +98,12 @@ class StatementAnalysis(BaseModel):
         None,
         description="Decision on whether to grant a loan based on the statement analysis. It's optional and can be True (grant loan), False (deny loan), or not provided.",
     )
+
+
+class LoanPredictionResponse(BaseModel):
+    statement_analysis: StatementAnalysis = Field(
+        ..., description="The analysis of the statement."
+    )
+    statement_analysis_ref: str = Field(
+        ..., description="Reference to the saved statement analysis in the database."
+    )
