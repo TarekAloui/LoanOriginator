@@ -1,0 +1,14 @@
+openai
+langchain
+huggingface_hub
+langchain-openai
+cohere
+google-cloud-storage
+google-cloud-firestore
+PyPDF2
+numpy
+pandas
+matplotlib
+sklearn
+fastapi
+uvicorn
