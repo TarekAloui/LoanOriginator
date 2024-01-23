@@ -1,2 +1,3 @@
 backend/env/
 backend/secrets/
+*__pycache__*
