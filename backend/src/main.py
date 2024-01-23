@@ -17,10 +17,13 @@ app = FastAPI()
 async def get_loan_prediction_endpoint(statement_pdf_blob: str) -> StatementAnalysis:
     try:
         print("Running get_loan_prediction")
+        print("Processing statement")
         statement_data = process_statement_pdf(statement_pdf_blob, log=True)
+        print("Extracting Analysis")
         statement_analysis = extract_analysis_from_statement_df(
             statement_data, log=True
         )
+        print("Running prediction")
         prediction = predict_loan_decision(statement_analysis)
         statement_analysis["loan_decision"] = prediction
         return statement_analysis

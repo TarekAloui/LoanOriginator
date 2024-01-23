@@ -35,11 +35,11 @@ class MonthlySummary(BaseModel):
     loan_to_income_ratio: Optional[float] = Field(
         None, description="Ratio of loan payments to total deposits"
     )
-    YearMonth: Optional[date] = Field(None, description="Year and month of the summary")
+    YearMonth: Optional[str] = Field(None, description="Year and month of the summary")
 
 
 class Transaction(BaseModel):
-    Date: Optional[date] = Field(None, description="Date of the transaction")
+    Date: Optional[str] = Field(None, description="Date of the transaction")
     Transaction_Details: Optional[str] = Field(
         None, description="Details or description of the transaction"
     )

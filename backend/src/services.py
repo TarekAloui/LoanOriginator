@@ -62,7 +62,7 @@ def preprocess_df(df):
         df["Deposit"] == "YES", df["Amount"].abs(), -df["Amount"].abs()
     )
 
-    df["Category"] = df["Category"].fillna("Other", inplace=True)
+    df["Category"] = df["Category"].fillna("Other")
 
     df.dropna(subset=["Date", "Amount", "Deposit"], inplace=True)
 
@@ -133,6 +133,8 @@ def process_statement_pdf(statement_pdf_blob, log=False):
 
     # Creating dataframe
 
+    print("DEBUG: Creating Dataframe")
+
     df = pd.read_csv(
         StringIO(transactions_text),
         header=None,
@@ -141,7 +143,10 @@ def process_statement_pdf(statement_pdf_blob, log=False):
     )
 
     # Pre-process and clean dataframe
+    print("DEBUG: Preprocessing df")
     df = preprocess_df(df)
+
+    print("DEBUG: Generating Metadata")
 
     # Extracting metadata
     metadata_schema = {
@@ -156,7 +161,7 @@ def process_statement_pdf(statement_pdf_blob, log=False):
     # Run metadata extraction llm chain
     llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
     chain = create_extraction_chain(metadata_schema, llm)
-    meta_data = chain.invoke(transactions_text)[0]
+    meta_data = chain.run(transactions_text)[0]
 
     statement_data = {
         "country_code": meta_data["country_code_iso_3166_standard"],
