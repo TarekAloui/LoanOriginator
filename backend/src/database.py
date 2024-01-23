@@ -2,15 +2,17 @@ import json
 from google.cloud import firestore
 
 
-def save_statement_analysis(statement_id, statement_analysis):
+def save_statement_analysis(statement_analysis):
     db = firestore.Client()
-    doc_ref = db.collection("statements").document(statement_id)
+    doc_ref = db.collection("statements").document()
 
-    # serializing statement_analysis
-    statement_analysis = json.dumps(statement_analysis)
-    statement_analysis = json.loads(statement_analysis)
+    # serializing and deserializing statement_analysis
+    # to make sure it can be saved in firestore
+    statement_analysis = json.loads(json.dumps(statement_analysis))
 
     doc_ref.set(statement_analysis)
+
+    return doc_ref.id
 
 
 def save_training_statement_analysis(statement_id):

@@ -40,7 +40,7 @@ class MonthlySummary(BaseModel):
 
 class Transaction(BaseModel):
     Date: Optional[str] = Field(None, description="Date of the transaction")
-    Transaction_Details: Optional[str] = Field(
+    Description: Optional[str] = Field(
         None, description="Details or description of the transaction"
     )
     Amount: Optional[float] = Field(None, description="Amount of the transaction")
@@ -94,7 +94,7 @@ class StatementAnalysis(BaseModel):
         None,
         description="Textual analysis providing reasons for and against approving a loan based on the statement analysis",
     )
-    loan_decision: Optional[bool] = Field(
+    loan_decision: Optional[int] = Field(
         None,
         description="Decision on whether to grant a loan based on the statement analysis. It's optional and can be True (grant loan), False (deny loan), or not provided.",
     )

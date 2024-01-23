@@ -15,6 +15,9 @@ from langchain.prompts import ChatPromptTemplate
 from .database import get_training_statements
 
 
+# PART 1: Generating bank statement analysis
+
+
 def extract_text_from_pdf_bucket(pdf_blob):
     # Loading pdf object from gcs storage
     storage_client = storage.Client()
@@ -133,20 +136,15 @@ def process_statement_pdf(statement_pdf_blob, log=False):
 
     # Creating dataframe
 
-    print("DEBUG: Creating Dataframe")
-
     df = pd.read_csv(
         StringIO(transactions_text),
         header=None,
-        names=["Date", "Transaction Details", "Amount", "Deposit", "Category"],
+        names=["Date", "Description", "Amount", "Deposit", "Category"],
         on_bad_lines="skip",
     )
 
     # Pre-process and clean dataframe
-    print("DEBUG: Preprocessing df")
     df = preprocess_df(df)
-
-    print("DEBUG: Generating Metadata")
 
     # Extracting metadata
     metadata_schema = {
