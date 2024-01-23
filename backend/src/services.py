@@ -3,6 +3,7 @@ from io import StringIO
 import pandas as pd
 import numpy as np
 import json
+from datetime import datetime
 from google.cloud import storage
 from PyPDF2 import PdfReader
 from sklearn.neighbors import KNeighborsClassifier
@@ -11,7 +12,7 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import LLMChain, create_extraction_chain
 from langchain.prompts import ChatPromptTemplate
 
-from database import get_training_statements
+from .database import get_training_statements
 
 
 def extract_text_from_pdf_bucket(pdf_blob):
@@ -61,7 +62,7 @@ def preprocess_df(df):
         df["Deposit"] == "YES", df["Amount"].abs(), -df["Amount"].abs()
     )
 
-    df["Category"].fillna("Other", inplace=True)
+    df["Category"] = df["Category"].fillna("Other", inplace=True)
 
     df.dropna(subset=["Date", "Amount", "Deposit"], inplace=True)
 
@@ -155,7 +156,7 @@ def process_statement_pdf(statement_pdf_blob, log=False):
     # Run metadata extraction llm chain
     llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
     chain = create_extraction_chain(metadata_schema, llm)
-    meta_data = chain.run(transactions_text)[0]
+    meta_data = chain.invoke(transactions_text)[0]
 
     statement_data = {
         "country_code": meta_data["country_code_iso_3166_standard"],

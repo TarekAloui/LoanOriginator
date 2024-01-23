@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from database import (
+from .database import (
     save_statement_analysis,
     save_training_statement_analysis,
 )
-from models import MonthlySummary, Transaction, StatementAnalysis
-from services import (
+from .models import MonthlySummary, Transaction, StatementAnalysis
+from .services import (
     process_statement_pdf,
     extract_analysis_from_statement_df,
     predict_loan_decision,
@@ -16,8 +16,11 @@ app = FastAPI()
 @app.post("/get_loan_prediction/")
 async def get_loan_prediction_endpoint(statement_pdf_blob: str) -> StatementAnalysis:
     try:
-        statement_data = process_statement_pdf(statement_pdf_blob)
-        statement_analysis = extract_analysis_from_statement_df(statement_data)
+        print("Running get_loan_prediction")
+        statement_data = process_statement_pdf(statement_pdf_blob, log=True)
+        statement_analysis = extract_analysis_from_statement_df(
+            statement_data, log=True
+        )
         prediction = predict_loan_decision(statement_analysis)
         statement_analysis["loan_decision"] = prediction
         return statement_analysis

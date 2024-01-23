@@ -9,6 +9,6 @@ PyPDF2
 numpy
 pandas
 matplotlib
-sklearn
+scikit-learn
 fastapi
 uvicorn
