@@ -13,7 +13,7 @@ from .services import (
 app = FastAPI()
 
 
-@app.post("/get_loan_prediction/")
+@app.post("/get_loan_prediction_endpoint/")
 async def get_loan_prediction_endpoint(statement_pdf_blob: str) -> StatementAnalysis:
     try:
         print("Running get_loan_prediction")
@@ -28,7 +28,7 @@ async def get_loan_prediction_endpoint(statement_pdf_blob: str) -> StatementAnal
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/save_training_datapoint/")
+@app.post("/save_training_datapoint_endpoint/")
 async def save_training_datapoint_endpoint(
     statement_analysis_ref: str, statement_analysis: StatementAnalysis
 ) -> dict[str, str]:
