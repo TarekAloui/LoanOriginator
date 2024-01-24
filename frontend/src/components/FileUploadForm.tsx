@@ -2,12 +2,18 @@
 "use client";
 import React, { useState } from "react";
 
-type FileWithPreview = File & { preview: string };
+type FileWithPreview = File & {
+  preview: string;
+  name: string;
+  type: string;
+  size: number;
+};
 
 const FileUploadForm: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
     null
   );
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -20,8 +26,15 @@ const FileUploadForm: React.FC = () => {
       }
 
       // Create a preview and set the selected file
-      const fileWithPreview = { ...file, preview: URL.createObjectURL(file) };
-      setSelectedFile(fileWithPreview);
+      const fileWithPreview = {
+        preview: URL.createObjectURL(file),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      };
+      setSelectedFile(fileWithPreview as FileWithPreview);
+
+      console.log(file.name);
     }
   };
 
@@ -29,6 +42,9 @@ const FileUploadForm: React.FC = () => {
     if (selectedFile) {
       URL.revokeObjectURL(selectedFile.preview);
       setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Reset the file input
+      }
     }
   };
 
@@ -52,8 +68,13 @@ const FileUploadForm: React.FC = () => {
         return;
       }
 
-      const fileWithPreview = { ...file, preview: URL.createObjectURL(file) };
-      setSelectedFile(fileWithPreview);
+      const fileWithPreview = {
+        preview: URL.createObjectURL(file),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      };
+      setSelectedFile(fileWithPreview as FileWithPreview);
     }
   };
 
@@ -103,25 +124,49 @@ const FileUploadForm: React.FC = () => {
             </div>
 
             {selectedFile && (
-              <div className="flex items-center space-x-4 mb-5 rounded-md bg-[#F5F7FB] py-4 px-8">
-                {/* PDF Icon */}
-                <img
-                  src="/pdf_icon.png"
-                  alt="PDF Icon"
-                  className="h-6 w-6"
-                />{" "}
-                {/* Adjust the size as needed */}
-                {/* File name */}
-                <span className="truncate text-base font-medium text-[#07074D]">
-                  {selectedFile.name}
-                </span>
-                {/* Existing remove button */}
+              <div className="flex items-center justify-between mb-5 rounded-md bg-[#F5F7FB] py-4 px-8 w-full">
+                {/* Left Section: PDF Icon and File Name */}
+                <div className="flex items-center space-x-4">
+                  {/* PDF Icon */}
+                  <img src="/pdf_icon.png" alt="PDF Icon" className="h-6 w-6" />
+                  {/* File name */}
+                  <span className="truncate text-base font-medium text-[#07074D]">
+                    {selectedFile.name}
+                  </span>
+                </div>
+
+                {/* Right Section: Remove Button */}
                 <button
-                  className="text-[#07074D]"
+                  className="text-[#07074D] ml-auto" // ml-auto pushes the button to the right
                   onClick={removeFile}
                   type="button"
                 >
-                  {/* SVG code here */}
+                  <svg
+                    className="h-6 w-6" // Adjust size as needed
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="#ff0033"
+                    strokeWidth="0.8879999999999999"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke="#CCCCCC"
+                      stroke-width="0.192"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z"
+                        fill="#ff0033"
+                      ></path>{" "}
+                    </g>
+                  </svg>
                 </button>
               </div>
             )}
