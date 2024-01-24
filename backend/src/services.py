@@ -12,7 +12,7 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import LLMChain, create_extraction_chain
 from langchain.prompts import ChatPromptTemplate
 
-from .database import get_training_statements
+from database import get_training_statements
 
 
 # PART 1: Generating bank statement analysis

@@ -1,15 +1,15 @@
 from fastapi import FastAPI, HTTPException
-from .database import (
+from database import (
     save_statement_analysis,
     save_training_statement_analysis,
 )
-from .models import (
+from models import (
     MonthlySummary,
     Transaction,
     StatementAnalysis,
     LoanPredictionResponse,
 )
-from .services import (
+from services import (
     process_statement_pdf,
     extract_analysis_from_statement_df,
     predict_loan_decision,
