@@ -3,12 +3,14 @@ import FileUploadForm from "@/components/FileUploadForm";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <p className="text-lg md:text-lg lg:text-xl xl:text-2xl font-bold text-center mb-6 text-white">
-          Please upload your bank statement and we will take it from there!
-        </p>
+      <div className="flex flex-col items-center justify-center w-3/4">
+        <div>
+          <p className="text-lg md:text-lg lg:text-xl xl:text-2xl font-bold text-center mb-6 text-white">
+            Please upload your bank statement and we will take it from there!
+          </p>
+        </div>
+        <FileUploadForm />
       </div>
-      <FileUploadForm />
     </main>
   );
 }
