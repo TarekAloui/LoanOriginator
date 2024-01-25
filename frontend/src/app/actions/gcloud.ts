@@ -14,7 +14,7 @@ const storage =
       })
     : new Storage();
 
-const uploadFileToGCloud = async function (data: FormData) {
+const uploadFileToGCloud = async (data: FormData) => {
   try {
     const file: File | null = data.get("file") as unknown as File;
     if (!file) {

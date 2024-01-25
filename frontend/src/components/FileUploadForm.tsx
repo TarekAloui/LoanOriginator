@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { uploadFileToGCloud } from "../app/actions/gcloud";
 import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 const SubmitButton: React.FC = () => {
   const { pending } = useFormStatus();
@@ -57,7 +58,10 @@ const FileUploadForm: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
     null
   );
+
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -133,9 +137,8 @@ const FileUploadForm: React.FC = () => {
 
         const fileName = await resUpload.fileName;
 
-        console.log(fileName);
-
-        // Call backend API to analyze statement
+        // Redirecting to the statement analysis page
+        router.push(`/results/${fileName}`);
       } catch (error) {
         alert(`Error uploading file: ${error}`);
         removeFile();
