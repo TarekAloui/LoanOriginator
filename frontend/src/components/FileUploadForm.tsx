@@ -1,12 +1,56 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from "react";
+import { uploadFileToGCloud } from "../app/actions/gcloud";
+import { useFormStatus } from "react-dom";
 
-type FileWithPreview = File & {
+const SubmitButton: React.FC = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="hover:shadow-form w-full rounded-md bg-[#f3b334] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+      type="submit"
+      aria-disabled={pending}
+    >
+      Send Statement
+    </button>
+  );
+};
+
+const LoadingSpinner: React.FC = () => {
+  const { pending } = useFormStatus();
+  return (
+    <div className="flex justify-center">
+      {pending && (
+        <svg
+          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="#ffffff"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="#ffffff"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          ></path>
+        </svg>
+      )}
+    </div>
+  );
+};
+
+type FileWithPreview = {
   preview: string;
-  name: string;
-  type: string;
-  size: number;
+  file: File;
 };
 
 const FileUploadForm: React.FC = () => {
@@ -28,9 +72,7 @@ const FileUploadForm: React.FC = () => {
       // Create a preview and set the selected file
       const fileWithPreview = {
         preview: URL.createObjectURL(file),
-        name: file.name,
-        type: file.type,
-        size: file.size,
+        file,
       };
       setSelectedFile(fileWithPreview as FileWithPreview);
 
@@ -70,11 +112,36 @@ const FileUploadForm: React.FC = () => {
 
       const fileWithPreview = {
         preview: URL.createObjectURL(file),
-        name: file.name,
-        type: file.type,
-        size: file.size,
+        file,
       };
       setSelectedFile(fileWithPreview as FileWithPreview);
+    }
+  };
+
+  const handleSendFile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (selectedFile) {
+      try {
+        const data = new FormData();
+        data.set("file", selectedFile.file);
+
+        const resUpload = await uploadFileToGCloud(data);
+
+        if (resUpload.status !== 200) {
+          throw new Error(`Upload failed ${resUpload.error}`);
+        }
+
+        const fileName = await resUpload.fileName;
+
+        console.log(fileName);
+
+        // Call backend API to analyze statement
+      } catch (error) {
+        alert(`Error uploading file: ${error}`);
+        removeFile();
+      }
+    } else {
+      alert("Please select a file first.");
     }
   };
 
@@ -86,11 +153,7 @@ const FileUploadForm: React.FC = () => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <form
-          className="py-6 px-9"
-          action="https://formbold.com/s/FORM_ID"
-          method="POST"
-        >
+        <form className="py-6 px-9" onSubmit={handleSendFile}>
           <div className="mb-6 pt-4">
             <label className="mb-5 block text-xl font-semibold text-[#07074D]">
               Upload File
@@ -131,7 +194,7 @@ const FileUploadForm: React.FC = () => {
                   <img src="/pdf_icon.png" alt="PDF Icon" className="h-6 w-6" />
                   {/* File name */}
                   <span className="truncate text-base font-medium text-[#07074D]">
-                    {selectedFile.name}
+                    {selectedFile.file.name}
                   </span>
                 </div>
 
@@ -164,7 +227,7 @@ const FileUploadForm: React.FC = () => {
                         clip-rule="evenodd"
                         d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z"
                         fill="#ff0033"
-                      ></path>{" "}
+                      ></path>
                     </g>
                   </svg>
                 </button>
@@ -172,11 +235,8 @@ const FileUploadForm: React.FC = () => {
             )}
           </div>
 
-          <div>
-            <button className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
-              Send Statement
-            </button>
-          </div>
+          <SubmitButton />
+          <LoadingSpinner />
         </form>
       </div>
     </div>

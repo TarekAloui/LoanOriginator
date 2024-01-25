@@ -6,7 +6,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center w-3/4">
         <div>
           <p className="text-lg md:text-lg lg:text-xl xl:text-2xl font-bold text-center mb-6 text-white">
-            Please upload your bank statement and we will take it from there!
+            Please upload your bank statement and we will take it from here!
           </p>
         </div>
         <FileUploadForm />
