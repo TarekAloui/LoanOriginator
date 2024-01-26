@@ -98,17 +98,27 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
     );
   }
 
-  // Separate reasons for and reasons against
+  // Process reasons for and against for better visual display
+  const processReasons = (reasonText: string) => {
+    return reasonText
+      .split("**")
+      .map((part, index) =>
+        index % 2 === 1 ? <strong key={index}>{part}</strong> : part
+      );
+  };
+
   const reasons = analysisData?.for_against.split("Reasons against:");
   const reasonsForArray = reasons?.[0]
     .replace("Reasons for:", "")
     .trim()
     .split("-")
-    .filter((reason) => reason.trim() !== "");
+    .filter((reason) => reason.trim() !== "")
+    .map((reason) => processReasons(reason.trim()));
   const reasonsAgainstArray = reasons?.[1]
     ?.trim()
     .split("-")
-    .filter((reason) => reason.trim() !== "");
+    .filter((reason) => reason.trim() !== "")
+    .map((reason) => processReasons(reason.trim()));
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -116,8 +126,6 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
       {/* Updated background color */}
       <div className="w-3/4 max-h-[80vh] overflow-y-auto p-10 bg-white rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-          {" "}
-          {/* Updated text color */}
           Statement Analysis and Loan Decision Overview
         </h1>
         <div className="mb-6">
@@ -131,23 +139,29 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
             </p>
           )}
         </div>
+        <h2 className="text-lg font-semibold text-gray-800 mb-2">
+          {" "}
+          Decision Factors:
+        </h2>
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            Reasons For:
-          </h2>
+          <h3 className="text-base font-semibold text-gray-800 mb-2">
+            {" "}
+            Reasons Supporting Loan Approval:
+          </h3>
           <ul className="list-disc pl-6 text-gray-800">
             {reasonsForArray?.map((reason, index) => (
-              <li key={index}>{reason.trim()}</li>
+              <li key={index}>{reason}</li>
             ))}
           </ul>
         </div>
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            Reasons Against:
-          </h2>
+          <h3 className="text-base font-semibold text-gray-800 mb-2">
+            {" "}
+            Reasons Against Loan Approval:
+          </h3>
           <ul className="list-disc pl-6 text-gray-800">
             {reasonsAgainstArray?.map((reason, index) => (
-              <li key={index}>{reason.trim()}</li>
+              <li key={index}>{reason}</li>
             ))}
           </ul>
         </div>
@@ -155,7 +169,6 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">
             {" "}
-            {/* Updated text color */}
             Statement Analysis:
           </h2>
           {/* Include other details from the statement analysis here */}
