@@ -8,37 +8,93 @@ import {
 } from "@/app/actions/backend";
 import { helix } from "ldrs";
 
+// Charts and Table components
+
+interface MonthlyBalanceTrendProps {
+  // Define your prop types here, for example:
+  // data: MonthlyBalanceDataType;
+}
+
+const MonthlyBalanceTrend: React.FC<MonthlyBalanceTrendProps> = (props) => {
+  // Destructure props if needed
+  // const { data } = props;
+
+  return (
+    <div>
+      {/* Render your Line Chart here */}
+      Monthly Balance Trend Placeholder
+    </div>
+  );
+};
+
+interface MonthlySavingsBarChartProps {
+  // Define your prop types here
+}
+
+const MonthlySavingsBarChart: React.FC<MonthlySavingsBarChartProps> = (
+  props
+) => {
+  return (
+    <div>
+      {/* Render your Bar Chart here */}
+      Monthly Savings Bar Chart Placeholder
+    </div>
+  );
+};
+
+interface ExpenseDistributionPieChartProps {
+  // Define your prop types here
+}
+
+const ExpenseDistributionPieChart: React.FC<
+  ExpenseDistributionPieChartProps
+> = (props) => {
+  return (
+    <div>
+      {/* Render your Pie Chart here */}
+      Expense Distribution Pie Chart Placeholder
+    </div>
+  );
+};
+
+interface TransactionDetailsTableProps {
+  // Define your prop types here, for example:
+  // transactions: TransactionType[];
+}
+
+const TransactionDetailsTable: React.FC<TransactionDetailsTableProps> = (
+  props
+) => {
+  return (
+    <div>
+      {/* Render your Transactions Table here */}
+      Transaction Details Table Placeholder
+    </div>
+  );
+};
+
+// Main Results Component
+
 const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
   const [analysisData, setAnalysisData] = useState<StatementAnalysis | null>(
     null
   );
-  const [statement_ref, setStatementRef] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleAgreeOnClick = async () => {
-    // Check if statement_ref is available
-    if (!statement_ref) {
-      alert("Statement reference is missing!");
-      return;
-    }
-
     try {
-      setLoading(true); // Set loading to true while the API call is being made
-      const response = await saveTrainingDatapoint(statement_ref);
+      const response = await saveTrainingDatapoint(statementId);
 
       if (response.status !== 200) {
         // If the API call was not successful, show an error message
         alert(`Failed to save training data point: ${response.error}`);
-        setLoading(false);
         return;
       }
 
-      // If the API call was successful, handle the success scenario
-      console.log("Training data point saved successfully:", response.data);
       alert("Training data point saved successfully!");
-      setLoading(false);
+      router.back();
 
       // Optionally, you can redirect the user to another page or take any other action
     } catch (error) {
@@ -62,7 +118,6 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           setLoading(false);
         } else {
           setAnalysisData(response.data.statement_analysis);
-          setStatementRef(response.data.statement_ref);
           setLoading(false);
         }
       } catch (err) {
@@ -78,7 +133,10 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
   if (loading) {
     helix.register();
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen ">
+        <div className="text-2xl font-semibold text-[#f3b334] pb-14">
+          Processing your statement... This may take a while
+        </div>
         <l-helix size="150" speed="2.5" color="#f3b334" />
       </div>
     );

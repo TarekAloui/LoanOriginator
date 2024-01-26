@@ -1,6 +1,7 @@
 "use server";
 
 import { GetSignedUrlConfig, Storage } from "@google-cloud/storage";
+import { revalidateTag } from "next/cache";
 import { v4 as uuidv4 } from "uuid"; // Import uuid
 
 const storage =
@@ -59,6 +60,8 @@ const uploadFileToGCloud = async (data: FormData) => {
         status: response.status,
       };
     }
+
+    revalidateTag("get_loan_prediction_endpoint");
 
     // Return the unique filename
     return { fileName: uniqueFileName, status: 200 };

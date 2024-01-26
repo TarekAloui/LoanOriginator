@@ -135,8 +135,7 @@ const FileUploadForm: React.FC = () => {
           throw new Error(`Upload failed ${resUpload.error}`);
         }
 
-        const fileName = await resUpload.fileName;
-
+        const fileName = resUpload.fileName;
         // Redirecting to the statement analysis page
         router.push(`/results/${fileName}`);
       } catch (error) {

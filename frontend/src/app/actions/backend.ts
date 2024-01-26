@@ -6,7 +6,7 @@ const getLoanPrediction = async (statement_id: string) => {
 
     const response = await fetch(endpoint, {
       method: "POST", // Consider if POST is appropriate for your use case or if it should be GET.
-      // No need to set Content-Type to application/json since you're not sending a JSON body.
+      next: { tags: ["get_loan_prediction_endpoint"], revalidate: 3600 },
     });
 
     if (!response.ok) {
@@ -27,13 +27,10 @@ const getLoanPrediction = async (statement_id: string) => {
 
 const saveTrainingDatapoint = async (statement_analysis_ref: string) => {
   try {
-    const endpoint = `${process.env.BACKEND_URL}/save_training_datapoint_endpoint/`;
+    const endpoint = `${process.env.BACKEND_URL}/save_training_datapoint_endpoint/?statement_analysis_ref=${statement_analysis_ref}`;
     const response = await fetch(endpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ statement_analysis_ref }), // Send statement_analysis_ref in the request body
+      next: { tags: [statement_analysis_ref] },
     });
 
     if (!response.ok) {
