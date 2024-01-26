@@ -6,6 +6,7 @@ import {
   getLoanPrediction,
   saveTrainingDatapoint,
 } from "@/app/actions/backend";
+import { helix } from "ldrs";
 
 const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
   const [analysisData, setAnalysisData] = useState<StatementAnalysis | null>(
@@ -75,9 +76,10 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
   }, [statementId]);
 
   if (loading) {
+    helix.register();
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-[#f3b334]"></div>
+        <l-helix size="150" speed="2.5" color="#f3b334" />
       </div>
     );
   }
@@ -98,18 +100,25 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
 
   // Separate reasons for and reasons against
   const reasons = analysisData?.for_against.split("Reasons against:");
-  const reasonsFor = reasons?.[0].replace("Reasons for:", "").trim();
-  const reasonsAgainst = reasons?.[1]?.trim();
+  const reasonsForArray = reasons?.[0]
+    .replace("Reasons for:", "")
+    .trim()
+    .split("-")
+    .filter((reason) => reason.trim() !== "");
+  const reasonsAgainstArray = reasons?.[1]
+    ?.trim()
+    .split("-")
+    .filter((reason) => reason.trim() !== "");
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#07074D]">
+    <div className="flex items-center justify-center min-h-screen">
       {" "}
       {/* Updated background color */}
-      <div className="w-3/4 p-10 bg-white rounded-lg shadow-lg">
+      <div className="w-3/4 max-h-[80vh] overflow-y-auto p-10 bg-white rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">
           {" "}
           {/* Updated text color */}
-          Results for statement {statementId}
+          Statement Analysis and Loan Decision Overview
         </h1>
         <div className="mb-6">
           {analysisData?.loan_decision === 1 ? (
@@ -124,27 +133,23 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
         </div>
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            {" "}
-            {/* Updated text color */}
             Reasons For:
           </h2>
-          <p className="text-gray-700">
-            {" "}
-            {/* Updated text color */}
-            {reasonsFor}
-          </p>
+          <ul className="list-disc pl-6 text-gray-800">
+            {reasonsForArray?.map((reason, index) => (
+              <li key={index}>{reason.trim()}</li>
+            ))}
+          </ul>
         </div>
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            {" "}
-            {/* Updated text color */}
             Reasons Against:
           </h2>
-          <p className="text-gray-700">
-            {" "}
-            {/* Updated text color */}
-            {reasonsAgainst}
-          </p>
+          <ul className="list-disc pl-6 text-gray-800">
+            {reasonsAgainstArray?.map((reason, index) => (
+              <li key={index}>{reason.trim()}</li>
+            ))}
+          </ul>
         </div>
         <hr className="my-6" />
         <div className="mb-6">
@@ -154,15 +159,31 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
             Statement Analysis:
           </h2>
           {/* Include other details from the statement analysis here */}
+          <p className="text-gray-700">Bank Name: {analysisData?.bank_name}</p>
           <p className="text-gray-700">
-            Bank Name: {analysisData?.bank_name}
-          </p>{" "}
-          {/* Updated text color */}
+            Country Code: {analysisData?.country_code}
+          </p>
+          <p className="text-gray-700">
+            Statement Year: {analysisData?.statement_year}
+          </p>
           <p className="text-gray-700">
             Monthly Deposit Mean: {analysisData?.monthly_deposit_mean}
-          </p>{" "}
-          {/* Updated text color */}
-          {/* ... Add other relevant details */}
+          </p>
+          <p className="text-gray-700">
+            Monthly Withdrawal Mean: {analysisData?.monthly_withdrawal_mean}
+          </p>
+          <p className="text-gray-700">
+            Monthly Rent Mean: {analysisData?.monthly_rent_mean}
+          </p>
+          <p className="text-gray-700">
+            Monthly Utilities Mean: {analysisData?.monthly_utilities_mean}
+          </p>
+          <p className="text-gray-700">
+            Monthly Loan Payment Mean: {analysisData?.monthly_loan_payment_mean}
+          </p>
+          <p className="text-gray-700">
+            Monthly Balance Mean: {analysisData?.monthly_balance_mean}
+          </p>
         </div>
         <div className="flex justify-end">
           <button
