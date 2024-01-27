@@ -36,9 +36,14 @@ interface StatementAnalysis {
   loan_decision: number;
 }
 
-interface FetchResponse {
+interface StatementAnalysisEndpointResponse {
   statement_analysis: StatementAnalysis;
   statement_analysis_ref: string;
 }
 
-export type { MonthlySummary, Transaction, StatementAnalysis, FetchResponse };
+export type {
+  MonthlySummary,
+  Transaction,
+  StatementAnalysis,
+  StatementAnalysisEndpointResponse,
+};
