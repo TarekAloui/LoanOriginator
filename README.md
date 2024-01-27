@@ -65,8 +65,8 @@ Additionally, the user has the option to quickly view the uploaded PDF, securely
   - The backend was deployed on Google Cloud Run, which allows for
     - Serverless deployment with ability to autoscale (up or down)
     - Cost-effective (I don't have to pay for long idle hours where the backend is not being used)
-    - Manage traffic between deployments
-    - Perform continuous deployment with every push to the main branch of the repository (the GCS Build services is listening to the repository and build the docker image on every push to the main branch. It also keeps track of revisions)
+    - Manage traffic between deployments (eg. for A/B testing features or rolling back in case of failure)
+    - Perform continuous deployment with every push to the main branch of the repository (the GCS Build services listens to the repository and builds the docker image on every push to the main branch. It also keeps track of revisions)
   - The frontend was deployed using Vercel, which also allows for continuous deployment by listening to changes in the main branch
 
 ### LLMs:
