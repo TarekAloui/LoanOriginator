@@ -37,7 +37,7 @@ The final step involves the agent confirming the loan decision by clicking the "
 Additionally, the user has the option to quickly view the uploaded PDF, securely hosted on Google Cloud. Each time the "View Statement" button is clicked, a new publicly available URL is generated with a certain expiration date. This button is strategically placed at the bottom, encouraging agents to first review the analysis and transaction list before making a final decision.
 
 
-## Tech Stack overview:
+## Tech Stack Overview:
 ### Backend:
   - The backend was built using FastAPI / Python
   - Langchain was used to create LLM chains and run GPT models on the given prompts and prompt templates
