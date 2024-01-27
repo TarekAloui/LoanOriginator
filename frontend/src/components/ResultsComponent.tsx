@@ -422,7 +422,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           Statement Analysis:
         </h2>
         <div className="mb-6 flex flex-row h-max w-full flex-grow">
-          <div className="flex flex-col mb-6 justify-center h-auto">
+          <div className="flex flex-col mb-6 justify-center h-auto w-1/3">
             <Card className="left h-max flex-grow">
               <Subtitle className="pb-5">Description</Subtitle>
               <p className="text-gray-400">
@@ -438,29 +438,29 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
               <Subtitle className="pb-5">Deposits and Withdrawals</Subtitle>
               <Text>Monthly Deposit Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_deposit_mean}
+                {analysisData?.monthly_deposit_mean.toFixed(2)}
               </Metric>
               <Text>Monthly Withdrawal Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_withdrawal_mean}
+                {analysisData?.monthly_withdrawal_mean.toFixed(2)}
               </Metric>
               <Text>Monthly Balance Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_balance_mean}
+                {analysisData?.monthly_balance_mean.toFixed(2)}
               </Metric>
               <Divider></Divider>
               <Subtitle className="pb-5">Expenses Overview</Subtitle>
               <Text>Monthly Rent Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_rent_mean}
+                {analysisData?.monthly_rent_mean.toFixed(2)}
               </Metric>
               <Text>Monthly Loan Payment Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_loan_payment_mean}
+                {analysisData?.monthly_loan_payment_mean.toFixed(2)}
               </Metric>
               <Text>Monthly Utilities Mean</Text>
               <Metric className="pb-3">
-                {analysisData?.monthly_utilities_mean}
+                {analysisData?.monthly_utilities_mean.toFixed(2)}
               </Metric>
             </Card>
           </div>
