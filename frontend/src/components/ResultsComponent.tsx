@@ -349,8 +349,8 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-3/4 max-h-[80vh] overflow-y-auto p-10 bg-gray-100 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center mb-6">
+      <div className="w-4/5 max-h-[80vh] overflow-y-auto p-10 bg-gray-100 rounded-lg shadow-lg">
+        <div className="flex justify-between items-center mb-6 flex-grow">
           <h1 className="text-2xl font-semibold text-gray-800">
             Statement Analysis and Loan Decision Overview
           </h1>
@@ -370,7 +370,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
             </button>
           </div>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 flex-grow">
           {analysisData?.loan_decision === 1 ? (
             <p className="text-xl font-bold text-green-600">
               Congrats! Your loan is approved.
@@ -381,10 +381,10 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
             </p>
           )}
         </div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-6 w-full">
           Decision Factors:
         </h2>
-        <Card>
+        <Card className="flex flex-col flex-grow w-full justify-center">
           <Callout
             className="mb-6"
             title="Reasons Supporting Loan Approval"
@@ -418,12 +418,12 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           </Callout>
         </Card>
         <hr className="my-6" />
-        <h2 className="text-lg font-semibold text-gray-800 mb-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-6 flex-grow">
           Statement Analysis:
         </h2>
-        <div className="mb-6 flex flex-row w-full h-max">
+        <div className="mb-6 flex flex-row h-max w-full flex-grow">
           <div className="flex flex-col mb-6 justify-center h-auto">
-            <Card className="max-w-lg mx-auto left h-max flex-grow">
+            <Card className="left h-max flex-grow">
               <Subtitle className="pb-5">Description</Subtitle>
               <p className="text-gray-400">
                 Bank Name: {analysisData?.bank_name}
@@ -464,7 +464,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
               </Metric>
             </Card>
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full mr-6">
             <MonthlyExpensesBarList
               monthlySummary={analysisData?.monthly_summary ?? null}
             ></MonthlyExpensesBarList>
