@@ -59,7 +59,7 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 
 - I have tried to support different international statement formats (for instance by intentionally standardizing the date format in the LLM prompt to support for eg. DD-MM-YYYY which is more used in some francophone countries like Canada or France)
 
-### Hallucinations, inaccuracies
+### Hallucinations, Inaccuracies
 - The solution relies entirely on the zero-shot capabilities of Large Language Models (i.e being able to perform an unseen task without providing examples of how to do it). So I have not had the time to perform any finetuning whatsoever. While the parsing results are decent given this is an MVP, in a production setting, we need better Transaction Category prediction by providing some examples to the LLM (from training statements, with the transactions' correct categories). The amounts parsed were not thoroughly checked but they seemed good enough for most of the statements I looked at. This leaves a big room for possible hallucinations and inaccurate parsing which requires better prompting, and potentially a better feedback system (where statement analyses can also be changed by agents at a granular level instead of just agreeing or not agreeing). The feedback could be used to improve the prompts and potentially fine-tune a better model.
 
 ### Loan/ No Loan Classification Considerations
