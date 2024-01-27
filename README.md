@@ -32,9 +32,9 @@ The frontend displays the metrics, loan decision, and the reasons for and agains
 
 ### Step 6: Confirming the Decision
 ![Demo Step 6](/images/demo_step_6.png)
-The final step involves the agent confirming the loan decision by clicking the "Confirm Decision" button. This action sends a message to the backend, adding the current statement analysis to the training data.
+The final step involves the agent confirming the loan decision by clicking the "Confirm Decision" button. This action sends a message to the backend, adding the current statement analysis to the training data. This button is strategically placed at the bottom, encouraging agents to first review the analysis and transaction list before making a final decision.
 
-Additionally, the user has the option to quickly view the uploaded PDF, securely hosted on Google Cloud. Each time the "View Statement" button is clicked, a new publicly available URL is generated with a certain expiration date. This button is strategically placed at the bottom, encouraging agents to first review the analysis and transaction list before making a final decision.
+Additionally, the user has the option to quickly view the uploaded PDF, securely hosted on Google Cloud. Each time the "View Statement" button is clicked, a new publicly available URL is generated with a certain expiration date.
 
 
 ## Tech Stack Overview:
