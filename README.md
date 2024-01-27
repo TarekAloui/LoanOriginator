@@ -20,25 +20,25 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 - At the bottom of the results page is a "Confirm Decision" button that would be clicked by an agent that agrees with the loan decision and the extracted statement analysis. So a new datapoint is added to the training data to inform future decisions
 - The user can also quickly view the uploaded pdf, which is securely hosted on the Google Cloud. Each time "View Statement" button is clicked, a new publicly available url is generated with a certain expiration date. The button was intentionally-placed in the bottom to make sure the agent first reviews the analysis and transaction list before making a final decision.
 
-Tech Stack overview:
-- Backend:
+## Tech Stack overview:
+### Backend:
   - The backend was built using FastAPI / Python
   - Langchain was used to create LLM chains and run GPT models on the given prompts and prompt templates
   - Pandas was used to tabulate the transactions extracted by the LLM and calculate the summary statistics
   - Scikit-Learn was used to train the KNN classifier and run the inference on new datapoints
 
-- Frontend:
+### Frontend:
   - The frontend uses Next.js with Typescript and TailwindCSS.
   - Tremor library was used for visualizations
   - MUI library was used for displaying the transactions table
   - LDRS library was used for the cool spinning helix loader
 
-- Database
+### Database
   - Google Cloud Firestore (Document-based) database was used for saving the new statement analyses and the training data for the KNN as it gets updated
-- Storage:
+### Storage:
   - Google Cloud Storage was used for uploading statement pdfs and sharing secure publicly-available urls
 
-- Deployment
+### Deployment
   - The backend was containerized using Docker and the image is hosted on Dockerhub
   - The backend was deployed on Google Cloud Run, which allows for
     - Serverless deployment with ability to autoscale (up or down)
@@ -47,7 +47,7 @@ Tech Stack overview:
     - Perform continuous deployment with every push to the main branch of the repository (the GCS Build services is listening to the repository and build the docker image on every push to the main branch. It also keeps track of revisions)
   - The frontend was deployed using Vercel, which also allows for continuous deployment by listening to changes in the main branch
 
-- LLMs:
+### LLMs:
   - gpt-4-1106-preview was used for the transaction parsing and providing reasons for and against providing a loan
   - gpt-3.5-turbo was used for extracting the statement metadata
 
