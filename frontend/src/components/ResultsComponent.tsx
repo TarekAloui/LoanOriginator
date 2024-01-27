@@ -21,6 +21,12 @@ import {
   BarList,
   SearchSelect,
   SearchSelectItem,
+  TabGroup,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  LineChart,
   Icon,
 } from "@tremor/react";
 import {
@@ -42,37 +48,106 @@ interface MonthlyTrendsProps {
 }
 
 const MonthlyTrends: React.FC<MonthlyTrendsProps> = ({ monthlySummary }) => {
-  const [selectedMonth, setSelectedMonth] = useState(0);
   if (!monthlySummary) {
     return null;
   }
 
-  // Prepare data for the BarList
-  const barListData = [
-    {
-      name: "Total Deposits",
-      value: monthlySummary[selectedMonth].total_deposits,
-    },
-    {
-      name: "Total Withdrawals",
-      value: -monthlySummary[selectedMonth].total_withdrawals, // Assuming withdrawals are negative
-    },
-    {
-      name: "Rent/ Mortgage Payment",
-      value: -monthlySummary[selectedMonth].rent_mortgage_payments,
-    },
-    {
-      name: "Utility Payments",
-      value: -monthlySummary[selectedMonth].utility_payments,
-    },
-  ];
+  interface DepositWithdrawalsDataPoint {
+    month: number;
+    Deposits: number;
+    Withdrawals: number;
+  }
+
+  interface ExpensesDataPoint {
+    month: number;
+    "Rent and Mortgage Payments": number;
+    "Utility Payments": number;
+    "Loan Payments": number;
+  }
+
+  interface AverageBalanceDataPoint {
+    month: number;
+    "Average Balance": number;
+  }
+
+  interface MonthlyTrendsData {
+    depositsWithdrawalsData: DepositWithdrawalsDataPoint[];
+    expensesData: ExpensesDataPoint[];
+    averageBalanceData: AverageBalanceDataPoint[];
+  }
+
+  const processDataForLineCharts = (
+    monthlySummary: MonthlySummary[]
+  ): MonthlyTrendsData => {
+    const depositsWithdrawalsData: DepositWithdrawalsDataPoint[] = [];
+    const expensesData: ExpensesDataPoint[] = [];
+    const averageBalanceData: AverageBalanceDataPoint[] = [];
+
+    monthlySummary.forEach((summary, index) => {
+      depositsWithdrawalsData.push({
+        month: index + 1,
+        Deposits: summary.total_deposits,
+        Withdrawals: -summary.total_withdrawals,
+      });
+      expensesData.push({
+        month: index + 1,
+        "Rent and Mortgage Payments": -summary.rent_mortgage_payments,
+        "Utility Payments": -summary.utility_payments,
+        "Loan Payments": -summary.loan_payments,
+      });
+      averageBalanceData.push({
+        month: index + 1,
+        "Average Balance": summary.average_balance,
+      });
+    });
+
+    return { depositsWithdrawalsData, expensesData, averageBalanceData };
+  };
+
+  const { depositsWithdrawalsData, expensesData, averageBalanceData } =
+    processDataForLineCharts(monthlySummary);
 
   return (
     <div className="mb-6 ml-6 flex w-full h-full">
       <Card className="w-full h-full">
-        <div>
-          <Subtitle className="mb-12">Monthly Trends</Subtitle>
-        </div>
+        <Subtitle className="mb-6">Monthly Trends</Subtitle>
+        <TabGroup>
+          <TabList>
+            <Tab>Deposits vs Withdrawals Trends</Tab>
+            <Tab>Expenses Trends</Tab>
+            <Tab>Average Balance Trends</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <LineChart
+                data={depositsWithdrawalsData} // Combine data
+                index="month"
+                categories={["Deposits", "Withdrawals"]}
+                colors={["green", "red"]}
+              />
+            </TabPanel>
+            <TabPanel>
+              <LineChart
+                data={expensesData}
+                index="month"
+                categories={[
+                  "Rent and Mortgage Payments",
+                  "Utility Payments",
+                  "Loan Payments",
+                ]}
+                colors={["blue", "orange", "red"]}
+              />
+            </TabPanel>
+            <TabPanel>
+              <LineChart
+                data={averageBalanceData}
+                index="month"
+                categories={["Average Balance"]}
+                colors={["purple"]}
+              />
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </Card>
     </div>
   );
@@ -346,9 +421,9 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
         <h2 className="text-lg font-semibold text-gray-800 mb-6">
           Statement Analysis:
         </h2>
-        <div className="mb-6 flex flex-row w-full">
-          <div className="flex flex-col mb-6 justify-center">
-            <Card className="max-w-lg mx-auto left">
+        <div className="mb-6 flex flex-row w-full h-max">
+          <div className="flex flex-col mb-6 justify-center h-auto">
+            <Card className="max-w-lg mx-auto left h-max">
               <Subtitle className="pb-5">Description</Subtitle>
               <p className="text-gray-400">
                 Bank Name: {analysisData?.bank_name}
