@@ -4,9 +4,9 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 ## Features Overview:
 - Automatically parsing transaction lists from different forms of bank statements
 - Automatically predicting the transaction categories (eg. Deposit, Rent/ Mortgage payment...)
-- Automatically detects some metadata (bank name, country code, statement year)
-- Provides monthly summaries (deposits, withdrawals and expenses per category)
-- Automatically generates a loan decision based on previously-fed examples of bank statements and loan decisions, the training data updates when the person checking the results looks through the data and decides they agree with the loan decision given by the algorithm. This adds a new datapoint to the training data
+- Automatically detecting some metadata (bank name, country code, statement year)
+- Providing monthly summaries (deposits, withdrawals and expenses per category)
+- Automatically generating a loan decision based on previously-fed examples of bank statements and loan decisions. The training data updates when the person checking the results looks through the data and decides they agree with the loan decision given by the algorithm. This adds a new datapoint to the training data.
 
 ## Demo and Functionality Overview:
 
