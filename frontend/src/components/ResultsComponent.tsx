@@ -29,6 +29,7 @@ import {
 } from "@heroicons/react/solid";
 import { DocumentTextIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/navigation";
+import { getPDFPublicURL } from "@/app/actions/gcloud";
 
 // Charts and Table components
 
@@ -168,9 +169,17 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
   };
 
   // Function to handle view statement button click
-  const handleViewStatement = () => {
+  const handleViewStatement = async () => {
     if (analysisData && analysisData.statement_pdf_blob) {
-      // get public pdf url
+      const response = await getPDFPublicURL(analysisData.statement_pdf_blob);
+
+      if (response.status !== 200) {
+        // If the API call was not successful, show an error message
+        alert(`Failed to load statement: ${response.error}`);
+        return;
+      }
+
+      window.open(response.url, "_blank");
     }
   };
 

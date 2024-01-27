@@ -71,4 +71,23 @@ const uploadFileToGCloud = async (data: FormData) => {
   }
 };
 
-export { uploadFileToGCloud };
+const getPDFPublicURL = async (statementId: string) => {
+  try {
+    const config: GetSignedUrlConfig = {
+      version: "v4",
+      action: "read",
+      expires: Date.now() + 120 * 60 * 1000, // URL expires in 2 hours
+    };
+
+    const [url] = await storage
+      .bucket(process.env.GCP_BUCKET_NAME as string)
+      .file(`${statementId}`)
+      .getSignedUrl(config);
+
+    return { url, status: 200 };
+  } catch (error) {
+    return { error: "Error getting PDF public URL", status: 500 };
+  }
+};
+
+export { uploadFileToGCloud, getPDFPublicURL };
