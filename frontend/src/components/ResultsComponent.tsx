@@ -41,6 +41,17 @@ import { GiPayMoney, GiReceiveMoney } from "react-icons/gi";
 import { TbSolarElectricity } from "react-icons/tb";
 import { MdOutlineBedroomParent } from "react-icons/md";
 
+// MUI Table Imports
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+
 // Charts and Table components
 
 interface MonthlyTrendsProps {
@@ -225,7 +236,54 @@ interface TransactionDetailsTableProps {
 const TransactionDetailsTable: React.FC<TransactionDetailsTableProps> = ({
   transactionList,
 }) => {
-  return <div>Transaction Details Table Placeholder</div>;
+  const [showTransactions, setShowTransactions] = useState(false);
+
+  const handleToggleTransactions = () => {
+    setShowTransactions(!showTransactions);
+  };
+
+  return (
+    <div className="flex flex-col w-full align-middle mb-6">
+      <button
+        onClick={handleToggleTransactions}
+        className="text-[#121218] hover:text-[#0145A7] mb-6"
+      >
+        {showTransactions ? "Hide Transactions" : "Show Transactions"}
+      </button>
+      {showTransactions && (
+        <TableContainer
+          component={Paper}
+          sx={{ background: "bg-gray-100", color: "text-gray-800" }}
+        >
+          <Table
+            sx={{ minWidth: 650 }}
+            stickyHeader
+            aria-label="transaction table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell align="right">Amount</TableCell>
+                <TableCell>Category</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* Map through the transactionList to display rows */}
+              {transactionList.map((transaction, index) => (
+                <TableRow key={index}>
+                  <TableCell>{transaction.Date}</TableCell>
+                  <TableCell>{transaction.Description}</TableCell>
+                  <TableCell align="right">{transaction.Amount}</TableCell>
+                  <TableCell>{transaction.Category}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </div>
+  );
 };
 
 // Main Results Component
@@ -349,7 +407,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-4/5 max-h-[80vh] overflow-y-auto p-10 bg-gray-100 rounded-lg shadow-lg">
+      <div className="w-4/5 max-h-[90vh] overflow-y-auto p-10 bg-gray-100 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6 flex-grow">
           <h1 className="text-2xl font-semibold text-gray-800">
             Statement Analysis and Loan Decision Overview
@@ -357,10 +415,10 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           <div className="flex flex-row">
             <button
               onClick={handleViewStatement}
-              className="rounded text-indigo-700 hover:text-indigo-850 py-2 px-4 mr-2 flex items-center"
+              className="rounded text-[#121218] group py-2 px-4 mr-2 flex items-center"
             >
-              <DocumentTextIcon className="h-5 w-5 text-indigo-700 hover:text-indigo-850 mr-2" />{" "}
-              View Statement
+              <DocumentTextIcon className="h-5 w-5 text-[#121218] group-hover:text-[#0145A7] mr-2" />
+              <div className="group-hover:text-[#0145A7]">View Statement</div>
             </button>
             <button
               onClick={handleBack}
