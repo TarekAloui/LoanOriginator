@@ -21,6 +21,7 @@ import {
   BarList,
   SearchSelect,
   SearchSelectItem,
+  Icon,
 } from "@tremor/react";
 import {
   CheckCircleIcon,
@@ -30,6 +31,9 @@ import {
 import { DocumentTextIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/navigation";
 import { getPDFPublicURL } from "@/app/actions/gcloud";
+import { GiPayMoney, GiReceiveMoney } from "react-icons/gi";
+import { TbSolarElectricity } from "react-icons/tb";
+import { MdOutlineBedroomParent } from "react-icons/md";
 
 // Charts and Table components
 
@@ -63,20 +67,11 @@ const MonthlyTrends: React.FC<MonthlyTrendsProps> = ({ monthlySummary }) => {
     },
   ];
 
-  const handleMonthChange = (value: string) => {
-    setSelectedMonth(Number(value));
-  };
-
   return (
     <div className="mb-6 ml-6 flex w-full h-full">
       <Card className="w-full h-full">
         <div>
           <Subtitle className="mb-12">Monthly Trends</Subtitle>
-          <BarList
-            data={barListData}
-            className="mt-2 h-min"
-            color={"#f3b334"}
-          />
         </div>
       </Card>
     </div>
@@ -99,18 +94,24 @@ const MonthlyExpensesBarList: React.FC<MonthlyExpensesBarListProps> = ({
   const barListData = [
     {
       name: "Total Deposits",
+      icon: () => <GiPayMoney className="h-5 w-5 text-white mr-2" />,
       value: monthlySummary[selectedMonth].total_deposits,
     },
     {
       name: "Total Withdrawals",
+      icon: () => <GiReceiveMoney className="h-5 w-5 text-white mr-2" />,
       value: -monthlySummary[selectedMonth].total_withdrawals, // Assuming withdrawals are negative
     },
     {
       name: "Rent/ Mortgage Payment",
+      icon: () => (
+        <MdOutlineBedroomParent className="h-5 w-5 text-white mr-2" />
+      ),
       value: -monthlySummary[selectedMonth].rent_mortgage_payments,
     },
     {
       name: "Utility Payments",
+      icon: () => <TbSolarElectricity className="h-5 w-5 text-white mr-2" />,
       value: -monthlySummary[selectedMonth].utility_payments,
     },
   ];
