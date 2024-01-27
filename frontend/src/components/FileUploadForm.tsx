@@ -79,8 +79,6 @@ const FileUploadForm: React.FC = () => {
         file,
       };
       setSelectedFile(fileWithPreview as FileWithPreview);
-
-      console.log(file.name);
     }
   };
 
@@ -128,6 +126,9 @@ const FileUploadForm: React.FC = () => {
       try {
         const data = new FormData();
         data.set("file", selectedFile.file);
+
+        console.log("Uploading file to GCloud...");
+        console.log(`File: ${selectedFile.file}`);
 
         const resUpload = await uploadFileToGCloud(data);
 

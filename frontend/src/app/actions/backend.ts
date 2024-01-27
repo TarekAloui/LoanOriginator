@@ -20,7 +20,6 @@ const getLoanPrediction = async (statement_id: string) => {
     const data = await response.json();
     return { data, status: 200 };
   } catch (error) {
-    console.error(error); // Log the error for server-side debugging
     return { error: "Get Loan Prediction Server Error", status: 500 };
   }
 };
@@ -44,7 +43,6 @@ const saveTrainingDatapoint = async (statement_analysis_ref: string) => {
     const data = await response.json();
     return { data, status: 200 };
   } catch (error) {
-    console.error(error); // Log the error for server-side debugging
     return { error: "Save Training Datapoint Server Error", status: 500 };
   }
 };

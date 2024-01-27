@@ -66,7 +66,6 @@ const uploadFileToGCloud = async (data: FormData) => {
     // Return the unique filename
     return { fileName: uniqueFileName, status: 200 };
   } catch (error) {
-    console.error("Error uploading file to Google Cloud Storage", error);
     return { error: "Error uploading file", status: 500 };
   }
 };

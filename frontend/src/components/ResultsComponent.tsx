@@ -333,7 +333,6 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
       // Optionally, you can redirect the user to another page or take any other action
     } catch (error) {
       // Handle any errors that occur during the API call
-      console.error("Error saving training data point:", error);
       alert("An error occurred while saving the training data point.");
       setLoading(false);
     }
