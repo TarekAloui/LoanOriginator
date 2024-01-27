@@ -357,10 +357,10 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           <div className="flex flex-row">
             <button
               onClick={handleViewStatement}
-              className="rounded bg-blue-500 py-2 px-4 text-white mr-2 flex items-center"
+              className="rounded text-indigo-700 hover:text-indigo-850 py-2 px-4 mr-2 flex items-center"
             >
-              <DocumentTextIcon className="h-5 w-5 text-white mr-2" /> View
-              Statement
+              <DocumentTextIcon className="h-5 w-5 text-indigo-700 hover:text-indigo-850 mr-2" />{" "}
+              View Statement
             </button>
             <button
               onClick={handleBack}
@@ -423,7 +423,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
         </h2>
         <div className="mb-6 flex flex-row w-full h-max">
           <div className="flex flex-col mb-6 justify-center h-auto">
-            <Card className="max-w-lg mx-auto left h-max">
+            <Card className="max-w-lg mx-auto left h-max flex-grow">
               <Subtitle className="pb-5">Description</Subtitle>
               <p className="text-gray-400">
                 Bank Name: {analysisData?.bank_name}
