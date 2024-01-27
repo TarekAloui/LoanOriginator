@@ -10,7 +10,7 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 
 ## Functionality Overview:
 - User uploads a bank statement pdf
-- The pdf gets uploaded to Google Cloud Storage and then a request is sent to the backend
+- The pdf gets uploaded to Google Cloud Storage and then a request is sent to the backend.
 - The backend runs an LLM to extract the transactions list in a predictable format. The LLM also tries to predict each transaction's category from a preset list of categories using the transaction description
 - The backend also extracts general metadata such as the bank name, country code and statement year
 - The backend calculates some summary metrics which are then fed to another LLM to generate reason for and reasons against providing a loan
@@ -29,6 +29,8 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 
 ### Frontend:
   - The frontend uses Next.js with Typescript and TailwindCSS.
+    - Next.js cache was used to save the backend responses temporarily to reduce the number of API calls to the backend
+    - Server Actions were used to make sure API calls (to GCS cloud storage for instance) happen in the server side to reduce risk of sharing API keys accidently
   - Tremor library was used for visualizations
   - MUI library was used for displaying the transactions table
   - LDRS library was used for the cool spinning helix loader
@@ -69,3 +71,9 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 - The model does not however take into account certain external factors which could be very crucial in making a loan decision
   - Eg. interest rates, average salary in the country the statement was issued..
   - Finding these factors requires feedback from experienced loan officers and bankers
+  
+
+### Better User Experience, Authentication
+- The frontend and user experience is still lacking. Currently, I am combining the view a customer would see with the view the agent would see. Ideally, there would be authentication in place with different experiences for both types of users
+- The frontend theme and visual design was rushed and could get better (better choice of color combinations and themes)
+- The frontend does not fully use the power of server-rendering offered by Next.js
