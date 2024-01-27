@@ -8,17 +8,34 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
 - Provides monthly summaries (deposits, withdrawals and expenses per category)
 - Automatically generates a loan decision based on previously-fed examples of bank statements and loan decisions, the training data updates when the person checking the results looks through the data and decides they agree with the loan decision given by the algorithm. This adds a new datapoint to the training data
 
-## Functionality Overview:
-- User uploads a bank statement pdf
-- The pdf gets uploaded to Google Cloud Storage and then a request is sent to the backend.
-- The backend runs an LLM to extract the transactions list in a predictable format. The LLM also tries to predict each transaction's category from a preset list of categories using the transaction description
-- The backend also extracts general metadata such as the bank name, country code and statement year
-- The backend calculates some summary metrics which are then fed to another LLM to generate reason for and reasons against providing a loan
-- The backend uses the metrics to provide a Loan/ No Loan classification using a simple KNN algorithm (the training data gets regularly updated by user as explained later)
-- The frontend receives the metrics, loan decision, reasons for giving the loan and reasons against and provides the information in a dashboard-like UI with Monthly overview of deposits, withdrawals and some expenses (utility, loan payments, rent/ mortgage)
-- The frontend also gives the option to show the full list of transactions if needed
-- At the bottom of the results page is a "Confirm Decision" button that would be clicked by an agent that agrees with the loan decision and the extracted statement analysis. So a new datapoint is added to the training data to inform future decisions
-- The user can also quickly view the uploaded pdf, which is securely hosted on the Google Cloud. Each time "View Statement" button is clicked, a new publicly available url is generated with a certain expiration date. The button was intentionally-placed in the bottom to make sure the agent first reviews the analysis and transaction list before making a final decision.
+## Demo and Functionality Overview:
+
+### Step 1: User uploads a bank statement pdf
+![Demo Step 1](/images/demo_step_1.png)
+User initiates the process by uploading a bank statement in PDF format. This file is then securely uploaded to Google Cloud Storage.
+
+### Step 2: Backend processing
+![Demo Step 2](/images/demo_step_2.png)
+Once the PDF is uploaded, a request is sent to the backend where the processing begins. This involves running an LLM to extract and format the transactions list.
+
+### Step 3: Extracting Transactions and Metadata
+![Demo Step 3](/images/demo_step_3.png)
+The backend extracts the transactions list in a predictable format and predicts each transaction's category. It also extracts general metadata like the bank name, country code, and statement year.
+
+### Step 4: Summary Metrics and Loan Decision
+![Demo Step 4](/images/demo_step_4.png)
+Summary metrics are calculated and fed to another LLM to generate reasons for and against providing a loan. The backend then uses these metrics to provide a Loan/No Loan classification using a KNN algorithm.
+
+### Step 5: Frontend Dashboard Display
+![Demo Step 5](/images/demo_step_5.png)
+The frontend displays the metrics, loan decision, and the reasons for and against the decision. It provides a dashboard-like UI with an overview of deposits, withdrawals, and expenses in various categories. The frontend also allows toggling the full list of transactions.
+
+### Step 6: Confirming the Decision
+![Demo Step 6](/images/demo_step_6.png)
+The final step involves the agent confirming the loan decision by clicking the "Confirm Decision" button. This action sends a message to the backend, adding the current statement analysis to the training data.
+
+Additionally, the user has the option to quickly view the uploaded PDF, securely hosted on Google Cloud. Each time the "View Statement" button is clicked, a new publicly available URL is generated with a certain expiration date. This button is strategically placed at the bottom, encouraging agents to first review the analysis and transaction list before making a final decision.
+
 
 ## Tech Stack overview:
 ### Backend:
@@ -41,6 +58,9 @@ An LLM-powered full-stack project for extracting transaction data from bank stat
   - Google Cloud Storage was used for uploading statement pdfs and sharing secure publicly-available urls
 
 ### Deployment
+
+![Deployment Loading](/images/deployment-loading.png)
+
   - The backend was containerized using Docker and the image is hosted on Dockerhub
   - The backend was deployed on Google Cloud Run, which allows for
     - Serverless deployment with ability to autoscale (up or down)
