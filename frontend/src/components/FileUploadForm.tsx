@@ -127,9 +127,6 @@ const FileUploadForm: React.FC = () => {
         const data = new FormData();
         data.set("file", selectedFile.file);
 
-        console.log("Uploading file to GCloud...");
-        console.log(`File: ${selectedFile.file}`);
-
         const resUpload = await uploadFileToGCloud(data);
 
         if (resUpload.status !== 200) {

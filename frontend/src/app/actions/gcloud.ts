@@ -4,16 +4,13 @@ import { GetSignedUrlConfig, Storage } from "@google-cloud/storage";
 import { revalidateTag } from "next/cache";
 import { v4 as uuidv4 } from "uuid"; // Import uuid
 
-const storage =
-  process.env.NODE_ENV === "development"
-    ? new Storage({
-        projectId: process.env.PROJECT_ID,
-        credentials: {
-          client_email: process.env.CLIENT_EMAIL,
-          private_key: process.env.GCS_PRIVATE_KEY,
-        },
-      })
-    : new Storage();
+const storage = new Storage({
+  projectId: process.env.PROJECT_ID,
+  credentials: {
+    client_email: process.env.CLIENT_EMAIL,
+    private_key: process.env.GCS_PRIVATE_KEY,
+  },
+});
 
 const uploadFileToGCloud = async (data: FormData) => {
   try {
@@ -66,7 +63,7 @@ const uploadFileToGCloud = async (data: FormData) => {
     // Return the unique filename
     return { fileName: uniqueFileName, status: 200 };
   } catch (error) {
-    return { error: "Error uploading file", status: 500 };
+    return { error: `Error uploading file ${error}`, status: 500 };
   }
 };
 
