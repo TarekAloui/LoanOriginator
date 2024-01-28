@@ -1,5 +1,7 @@
 "use server";
 
+export const maxDuration = 300; // 5 minutes [for Vercel deployment]
+
 const getLoanPrediction = async (statement_id: string) => {
   try {
     const endpoint = `${process.env.BACKEND_URL}/get_loan_prediction_endpoint/?statement_pdf_blob=statements/${statement_id}`;
