@@ -61,13 +61,14 @@ Additionally, the user has the option to quickly view the uploaded PDF, securely
 
 ![Deployment Loading](/images/deployment-loading.png)
 
-  - The backend was containerized using Docker and the image is hosted on Dockerhub
-  - The backend was deployed on Google Cloud Run, which allows for
+  - Both the frontend and backend were containerized using Docker and the image is hosted on Dockerhub
+  - Both the frontend and backend were deployed on Google Cloud Run, which allows for
     - Serverless deployment with ability to autoscale (up or down)
     - Cost-effective (I don't have to pay for long idle hours where the backend is not being used)
     - Manage traffic between deployments (eg. for A/B testing features or rolling back in case of failure)
     - Perform continuous deployment with every push to the main branch of the repository (the GCS Build services listens to the repository and builds the docker image on every push to the main branch. It also keeps track of revisions)
-  - The frontend was deployed using Vercel, which also allows for continuous deployment by listening to changes in the main branch
+
+  - Note: I tried deploying on Vercel, but ran into a server action timeout constraint (60s max I believe, when in reality the statement analysis API call takes longer than that). This ended up causing the website to crash with every deployment, so instead, I decided to containerize the frontend and deploy it on Google Cloud Run instead.
 
 ### LLMs:
   - gpt-4-1106-preview was used for the transaction parsing and providing reasons for and against providing a loan
