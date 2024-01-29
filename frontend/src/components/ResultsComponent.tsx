@@ -180,24 +180,30 @@ const MonthlyExpensesBarList: React.FC<MonthlyExpensesBarListProps> = ({
   const barListData = [
     {
       name: "Total Deposits",
-      icon: () => <GiPayMoney className="h-5 w-5 text-white mr-2" />,
+      icon: () => (
+        <GiPayMoney className="h-5 w-5 dark:text-white text-gray-900 mr-2" />
+      ),
       value: monthlySummary[selectedMonth].total_deposits,
     },
     {
       name: "Total Withdrawals",
-      icon: () => <GiReceiveMoney className="h-5 w-5 text-white mr-2" />,
+      icon: () => (
+        <GiReceiveMoney className="h-5 w-5 dark:text-white text-gray-900 mr-2" />
+      ),
       value: -monthlySummary[selectedMonth].total_withdrawals, // Assuming withdrawals are negative
     },
     {
       name: "Rent/ Mortgage Payment",
       icon: () => (
-        <MdOutlineBedroomParent className="h-5 w-5 text-white mr-2" />
+        <MdOutlineBedroomParent className="h-5 w-5 dark:text-white text-gray-900 mr-2" />
       ),
       value: -monthlySummary[selectedMonth].rent_mortgage_payments,
     },
     {
       name: "Utility Payments",
-      icon: () => <TbSolarElectricity className="h-5 w-5 text-white mr-2" />,
+      icon: () => (
+        <TbSolarElectricity className="h-5 w-5 dark:text-white text-gray-900 mr-2" />
+      ),
       value: -monthlySummary[selectedMonth].utility_payments,
     },
   ];
@@ -450,7 +456,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           >
             <ul className="list-disc pl-6 text-gray-800">
               {reasonsForArray?.map((reason, index) => (
-                <li key={index} className="text-gray-200">
+                <li key={index} className="dark:text-gray-200 text-gray-700">
                   {reason}
                 </li>
               ))}
@@ -467,7 +473,7 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           >
             <ul className="list-disc pl-6 text-gray-800">
               {reasonsAgainstArray?.map((reason, index) => (
-                <li key={index} className="text-gray-200">
+                <li key={index} className="dark:text-gray-200 text-gray-700">
                   {reason}
                 </li>
               ))}
@@ -482,13 +488,13 @@ const ResultsPage: React.FC<{ statementId: string }> = ({ statementId }) => {
           <div className="flex flex-col mb-6 justify-center h-auto w-1/3">
             <Card className="left h-max flex-grow">
               <Subtitle className="pb-5">Description</Subtitle>
-              <p className="text-gray-400">
+              <p className="dark:text-gray-400 text-gray-500">
                 Bank Name: {analysisData?.bank_name}
               </p>
-              <p className="text-gray-400">
+              <p className="dark:text-gray-400 text-gray-500">
                 Country Code: {analysisData?.country_code}
               </p>
-              <p className="text-gray-400">
+              <p className="dark:text-gray-400 text-gray-500">
                 Statement Year: {analysisData?.statement_year}
               </p>
               <Divider></Divider>

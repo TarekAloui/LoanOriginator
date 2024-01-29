@@ -45,12 +45,14 @@ Additionally, the user has the option to quickly view the uploaded PDF, securely
   - Scikit-Learn was used to train the KNN classifier and run the inference on new datapoints
 
 ### Frontend:
+  ![Demo Step 5](/images/light_mode.png)
   - The frontend uses Next.js with Typescript and TailwindCSS.
     - Next.js cache was used to save the backend responses temporarily to reduce the number of API calls to the backend
     - Server Actions were used to make sure API calls (to GCS cloud storage for instance) happen in the server side to reduce risk of sharing API keys accidently
   - Tremor library was used for visualizations
   - MUI library was used for displaying the transactions table
   - LDRS library was used for the cool spinning helix loader
+  - Website supports both light and dark modes
 
 ### Database
   - Google Cloud Firestore (Document-based) database was used for saving the new statement analyses and the training data for the KNN as it gets updated
